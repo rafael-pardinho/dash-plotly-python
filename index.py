@@ -37,8 +37,20 @@ app.layout = dbc.Container([
     ]),
     # Row 2
     dbc.Row([
+        # Drop 1
         dbc.Col([
-
+            dcc.Dropdown(
+                id='estado1',
+                value=state_options[0]['label'],
+                options=state_options
+            )
+        ]),
+        #Drop 2
+        dbc.Col([
+            dcc.Dropdown(
+                id='estado2',
+                value=state_options[1]['label'],
+                options=state_options)
         ])
     ])
 ])
