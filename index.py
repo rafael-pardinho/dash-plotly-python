@@ -20,6 +20,7 @@ state_options = [{'label': x, 'value': x} for x in df['ESTADO'].unique()]
 
 # Layout
 app.layout = dbc.Container([
+    # Row 1 filtro estados
     dbc.Row([
         dbc.Col([
             ThemeSwitchAIO(aio_id='theme', themes=[url_theme1, url_theme2]),
@@ -30,10 +31,32 @@ app.layout = dbc.Container([
                 multi=True,
                 options=state_options
             ),
+            # grafico em linha
             dcc.Graph(id='line_graph')
+        ])
+    ]),
+    # Row 2
+    dbc.Row([
+        dbc.Col([
+
         ])
     ])
 ])
+
+# Callbacks
+@app.callback(
+    Output('line_graph', 'figure'),
+    Input('estados', 'value')
+)
+def line(estados):
+    df_data = df.copy(deep=True)
+    mask = df_data['ESTADO'].isin(estados)
+
+    fig = px.line(df_data[mask], x='DATA', y='VALOR REVENDA (R$/L)',
+                  color='ESTADO')
+    
+    return fig
+
 
 # Rodar o server
 if __name__ == '__main__':
