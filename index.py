@@ -46,14 +46,17 @@ app.layout = dbc.Container([
 # Callbacks
 @app.callback(
     Output('line_graph', 'figure'),
-    Input('estados', 'value')
+    Input('estados', 'value'),
+    Input(ThemeSwitchAIO.ids.switch('theme'), 'value')
 )
-def line(estados):
+def line(estados, toggle):
+    template = template_theme1 if toggle else template_theme2
+
     df_data = df.copy(deep=True)
     mask = df_data['ESTADO'].isin(estados)
 
     fig = px.line(df_data[mask], x='DATA', y='VALOR REVENDA (R$/L)',
-                  color='ESTADO')
+                  color='ESTADO', template=template)
     
     return fig
 
