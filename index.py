@@ -109,7 +109,7 @@ def indicators(estado1, estado2, toggle):
             title={'text': estado},
             value=data.at[data.index[-1], 'VALOR REVENDA (R$/L)'],
             number={'prefix': 'R$', 'valueformat': '.2f'},
-            delta={'relative': True, 'valueformat': '.1f', 'reference': 100}
+            delta={'relative': True, 'valueformat': '.1f', 'reference': data.at[data.index[0], 'VALOR REVENDA (R$/L)']}
         ))
 
         fig.update_layout(template=template)
