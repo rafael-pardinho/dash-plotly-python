@@ -6,12 +6,22 @@ import pandas as pd
 
 from app import *
 
+# Styles
+url_theme1 = dbc.themes.VAPOR
+url_theme2 = dbc.themes.FLATLY
+template_theme1 = 'vapor'
+template_theme2 = 'flatly'
+
 # Reading data
 df = pd.read_csv('data_clean.csv')
 
 # Layout
 app.layout = dbc.Container([
-    html.H1('TESTE')
+    dbc.Row([
+        dbc.Col([
+            ThemeSwitchAIO(aio_id='theme', themes=[url_theme1, url_theme2])
+        ])
+    ])
 ])
 
 # Rodar o server
