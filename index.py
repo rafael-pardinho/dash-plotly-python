@@ -44,13 +44,21 @@ app.layout = dbc.Container([
                 value=state_options[0]['label'],
                 options=state_options
             )
-        ]),
+        ], sm=12, md=6),
         #Drop 2
         dbc.Col([
             dcc.Dropdown(
                 id='estado2',
                 value=state_options[1]['label'],
                 options=state_options)
+        ], sm=12, md=6),
+        # Graph 1
+        dbc.Col([
+            dcc.Graph(id='indicator1')
+        ]),
+        # Graph 2
+        dbc.Col([
+            dcc.Graph(id='indicator2')
         ])
     ])
 ])
@@ -72,6 +80,42 @@ def line(estados, toggle):
     
     return fig
 
+# Indicators
+@app.callback(
+    Output('indicator1', 'figure'),
+    Output('indicator2', 'figure'),
+    Input('estado1', 'value'),
+    Input('estado2', 'value'),
+    Input(ThemeSwitchAIO.ids.switch('theme'), 'value')
+
+)
+
+def indicators(estado1, estado2, toggle):
+    template = template_theme1 if toggle else template_theme2
+    df_data = df.copy(deep=True)
+    data_estado1 = df_data[df_data['ESTADO'].isin([estado1])]
+    data_estado2 = df_data[df_data['ESTADO'].isin([estado2])]
+
+    initial_data = str(int(df_data['ANO'].min()) -1)
+    final_date = df_data['ANO'].max()
+
+    iterable=[(estado1, data_estado1), (estado2, data_estado2)]
+    indicators = []
+
+    for estado, data in iterable:
+        fig = go.Figure()
+        fig.add_trace(go.Indicator(
+            mode='number+delta',
+            title={'text': estado},
+            value=data.at[data.index[-1], 'VALOR REVENDA (R$/L)'],
+            number={'prefix': 'R$', 'valueformat': '.2f'},
+            delta={'relative': True, 'valueformat': '.1f', 'reference': 100}
+        ))
+
+        fig.update_layout(template=template)
+        indicators.append(fig)
+
+    return indicators
 
 # Rodar o server
 if __name__ == '__main__':
