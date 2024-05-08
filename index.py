@@ -106,10 +106,10 @@ def indicators(estado1, estado2, toggle):
         fig = go.Figure()
         fig.add_trace(go.Indicator(
             mode='number+delta',
-            title={'text': estado},
+            title={'text': f"<span>{estado}</span><br><span style='font-size:0.7em'>{initial_data} - {final_date}</span>"},
             value=data.at[data.index[-1], 'VALOR REVENDA (R$/L)'],
             number={'prefix': 'R$', 'valueformat': '.2f'},
-            delta={'relative': True, 'valueformat': '.1f', 'reference': data.at[data.index[0], 'VALOR REVENDA (R$/L)']}
+            delta={'relative': True, 'valueformat': '.1%', 'reference': data.at[data.index[0], 'VALOR REVENDA (R$/L)']}
         ))
 
         fig.update_layout(template=template)
