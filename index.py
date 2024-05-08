@@ -29,7 +29,8 @@ app.layout = dbc.Container([
                 value=[state['label'] for state in state_options[:3]],
                 multi=True,
                 options=state_options
-            )
+            ),
+            dcc.Graph(id='line_graph')
         ])
     ])
 ])
