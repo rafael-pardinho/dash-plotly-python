@@ -15,11 +15,21 @@ template_theme2 = 'flatly'
 # Reading data
 df = pd.read_csv('data_clean.csv')
 
+# State options
+state_options = [{'label': x, 'value': x} for x in df['ESTADO'].unique()]
+
 # Layout
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
-            ThemeSwitchAIO(aio_id='theme', themes=[url_theme1, url_theme2])
+            ThemeSwitchAIO(aio_id='theme', themes=[url_theme1, url_theme2]),
+            html.H3('Preço x Estado'),
+            dcc.Dropdown(
+                id='estados',
+                value=[state['label'] for state in state_options[:3]],
+                multi=True,
+                options=state_options
+            )
         ])
     ])
 ])
